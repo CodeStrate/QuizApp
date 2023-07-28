@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+.radio-button {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+  height: 0;
+}
+
+.radio-button + label{
+  display: inline-block;
+  padding: 3px;
+  border: 2px solid #3C896D;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  margin: 8px;
+}
+
+.radio-button:checked + label {
+  border-color: #77BFA3;
+  background-color: #98C9A3;
+  color: white;
+}
+
+.radio-button:focus + label {
+  border: 2px dashed #3C896D;
+}
+
+.radio-button + label:hover{
+  background-color: #9DDBAD;
+}
+
+.medium + label{
+  border-color: #FC9E4F;
+}
+
+.medium:checked + label {
+  border-color: #FC9E4F;
+  background-color: #fdda72;
+  color: white;
+}
+
+.medium:focus + label {
+  border: 2px dashed #FC9E4F;
+}
+
+.medium + label:hover{
+  background-color: #ffeba9;
+}
+
+.hard + label{
+  border-color: #E87461;
+}
+
+.hard + label:hover{
+    background-color: #fca092;
+}
+
+.hard:checked + label {
+  border-color: #E87461;
+  background-color: #f97a7a;
+  color: white;
+}
+
+.hard:focus + label {
+  border: 2px dashed #eb6753;
+}
+
+.options + label {
+  border-width: 3px;
+  font-size: .8rem;
+  text-align: center;
+  width: 150px;
+  padding: 8px;
+  align-self: center;
+}
+
+.options:checked + label{
+  border-color: #77BFA3;
+  background-color: #98C9A3;
+  color: white;
+}

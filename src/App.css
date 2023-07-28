@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  padding: 0; margin: 0;
+}
+
+::-webkit-scrollbar{
+  opacity: 0.001;
+}
+
+
+.title--screen{
+  width: 100vw;
+  height: 100vh;
+  background: url(./assets/Background.svg);
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: animatedBackground 60s linear infinite alternate;
+}
+
+@keyframes animatedBackground {
+
+  from {
+    background-position: 0 0;
+  }
+
+  to{
+    background-position: 0 100%;
+  }
+  
+}
+
+.container{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.icon {
+  position: absolute;
+  z-index: 4;
+  top: 50px;
+  left: 50px;
+}
+
+svg {
+  width: 4rem; height: 4rem;
+  color: white;
+  cursor: pointer;
+  stroke: #316e58;
+  stroke-width: 80px;
+}
+
+.icon:hover{
+  filter: brightness(95%);
+}
+
+.icon:active{
+  transform: scale(.8);
+}
+
+.pref-container{
+    width: 500px;
+    height: 550px;
+    background-color: white;
+    position: absolute;
+    top: 140px;
+    left: 60px;
+    border-radius: 15px;
+    opacity: .9;
+    transition: all .5s ease-in-out;
+    padding: 30px;
+    overflow-y: scroll;
+    border: 3px solid #3C896D;
+    box-shadow: 0 6px #3C896D;
+}
+
+.close {
+    width: 0; height: 0;
+    opacity: 0;
+    transition: all .5s ease-in-out;
+}
+
+hr{
+  border: 2px solid #3C896D;
+  border-radius: 10px;
+}
+
+.open{
+  transform: translateX(200px);
+  transition: all 0.5s ease-in-out;
+}
+
+.music{
+  left: calc(100vw - 120px);
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.quiz{
+  width: 700px;
+  height: 700px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  overflow-y: scroll;
+  border: 3px solid #3C896D;
+  box-shadow: 0 6px #3C896D;
+  justify-content: flex-start;
+}
+
+.loader{
+  position: absolute;
+  top: 45%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading--Animation{
+  background-color: white;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 5px solid #3C896D;
+  animation: bounceTransform .5s ease-out infinite alternate;
+  animation-delay: .3s;
+  box-shadow: inset 1rem 1rem #3C896D;
+}
+
+@keyframes bounceTransform {
+  100% {
+    transform: translateY(-150px) rotateZ(-360deg);
+    border-radius: 10px;
+  }
+}
