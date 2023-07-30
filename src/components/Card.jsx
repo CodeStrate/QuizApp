@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react'
 export const Card = ({gameOverState, answerCountHandler, cardData}) => {
 
     const [shuffledOptions, setShuffledOptions] = useState([]);
-    const [selectedOptions, setSelectedOptions] = useState([]);
-
-    const cardIndex = cardData.id
+    const [selectedOptions, setSelectedOptions] = useState({});
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -23,30 +21,31 @@ export const Card = ({gameOverState, answerCountHandler, cardData}) => {
     const allOptions = [...cardData.incorrectAnswers, cardData.correctAnswer];
     const shuffled = shuffleArray(allOptions);
     setShuffledOptions(shuffled);
-    setSelectedOptions((prevSelected) => {
-        const newSelected = [...prevSelected]
-        newSelected[cardIndex] = ''
-        return newSelected
-    })
-  }, [cardData, cardIndex]);
+    setSelectedOptions((prevSelected) => ({
+        ...prevSelected,
+        [cardData.id]: '',
+      }))
+  }, [cardData]);
 
 
 
   const handleOptionSelect = (selectedOption) => {
-    setSelectedOptions(prevSelected => {
-        const newSelected = [...prevSelected]
-        newSelected[cardIndex] = selectedOption
-        return newSelected
-    })
+    setSelectedOptions((prevSelected) => ({
+        ...prevSelected,
+        [cardData.id]: selectedOption,
+      }))
   }
+
+
+  useEffect(() => {console.log(selectedOptions);}, [selectedOptions])
 
     const optionRadioComponents = shuffledOptions.map((option, index) => {
         return <RadioButton
             key={index}
             id={`option-${index}`}
-            name={`option-${cardIndex}`}
+            name={`option-${cardData.id}`}
             value={option}
-            checked={selectedOptions[cardIndex] === option}
+            checked={selectedOptions[cardData.id] === option}
             variant='options'
             onChange={() => handleOptionSelect(option)}
         >{option}</RadioButton>
