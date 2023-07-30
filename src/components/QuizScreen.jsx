@@ -50,8 +50,8 @@ export default function QuizScreen({className, apiParams}){
                 return {
                     id: nanoid(),
                     question : he.decode(card.question),
-                    answer : he.decode(card.correct_answer),
-                    incorrect_answers : card.incorrect_answers.map(e => he.decode(e))
+                    correctAnswer : he.decode(card.correct_answer),
+                    incorrectAnswers : card.incorrect_answers.map(e => he.decode(e))
                 }
             })
             setQuizData(cardData)  
@@ -60,16 +60,14 @@ export default function QuizScreen({className, apiParams}){
         fetchQuestionsFromAPI()
     },[newGame])
 
-    const cardComponents = quizData.map(card => {
+    const cardComponents = quizData.map((card, index) => {
         return (
             <Card
-            key={card.id}
+            key={index}
             id={card.id}
             gameOverState={gameOver}
             answerCountHandler={answerCountHandler}
-            question={card.question}
-            answer={card.answer}
-            incorrect_answers={card.incorrect_answers}
+            cardData={card}
             />
         )
     })

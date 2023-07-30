@@ -4,61 +4,57 @@ import RadioButton from './RadioButton'
 import { useEffect, useState } from 'react'
 
 
-export const Card = ({gameOverState, answerCountHandler, question, answer, incorrect_answers, id}) => {
+export const Card = ({gameOverState, answerCountHandler, cardData}) => {
 
-    const [selectedOption, setSelectedOption] = useState(null);
-    
-    useEffect(()=> {
-        setOptionState(generateOptions())
-    }, [question])
-    
-    const [optionState, setOptionState] = useState([])
-    
-    useEffect(() => {
-        setOptionState(prevOptionState => {
-            return prevOptionState.map(option => ({
-                ...option,
-                checked : selectedOption === option.id
-            }))
-        })
-    }, [selectedOption])
-    
-    function generateOptions() {
-        let randomIndex = Math.floor(Math.random() * incorrect_answers.length + 1)
-        const options = [...incorrect_answers]
-        options.splice(randomIndex, 0, answer)
+    const [shuffledOptions, setShuffledOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
 
-        return options.map((option, index) => ({
-            id : `option_${id}_${index}`,
-            value: option,
-            checked: false
-        }))
+    const cardIndex = cardData.id
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
+  };
+
+  useEffect(() => {
+    const allOptions = [...cardData.incorrectAnswers, cardData.correctAnswer];
+    const shuffled = shuffleArray(allOptions);
+    setShuffledOptions(shuffled);
+    setSelectedOptions((prevSelected) => {
+        const newSelected = [...prevSelected]
+        newSelected[cardIndex] = ''
+        return newSelected
+    })
+  }, [cardData, cardIndex]);
 
 
-     function selectOption(optionID){
-        setSelectedOption(optionID)
-    }
 
-    useEffect(() => {
-        console.log(optionState);
-    }, [optionState])
+  const handleOptionSelect = (selectedOption) => {
+    setSelectedOptions(prevSelected => {
+        const newSelected = [...prevSelected]
+        newSelected[cardIndex] = selectedOption
+        return newSelected
+    })
+  }
 
-    const optionRadioComponents = optionState.map((option, index) => {
+    const optionRadioComponents = shuffledOptions.map((option, index) => {
         return <RadioButton
             key={index}
-            id={option.id}
-            name='option'
-            value={option.value}
-            checked={option.checked}
+            id={`option-${index}`}
+            name={`option-${cardIndex}`}
+            value={option}
+            checked={selectedOptions[cardIndex] === option}
             variant='options'
-            onChange={() => selectOption(option.id)}
-        >{option.value}</RadioButton>
+            onChange={() => handleOptionSelect(option)}
+        >{option}</RadioButton>
     })
 
     return (
         <div className="card">
-            <CardQuestionParagraph>{question}</CardQuestionParagraph>
+            <CardQuestionParagraph>{cardData.question}</CardQuestionParagraph>
             <div className="option-container">
                 {optionRadioComponents}
             </div>
