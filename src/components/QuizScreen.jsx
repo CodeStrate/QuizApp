@@ -1,10 +1,12 @@
 // sample link :   https://opentdb.com/api.php?amount=10
 
 import { useEffect, useState } from "react"
-import { LoadingSubTitle } from "../styledComponents/SubTitle"
+import { LoadingSubTitle, SubTitle } from "../styledComponents/SubTitle"
 import { Card } from "./Card"
 import { nanoid } from "nanoid"
 import he from 'he'
+import { Button, SubmitButton } from "../styledComponents/Button"
+import { Paragraph } from "../styledComponents/Paragraph"
 
 
 export default function QuizScreen({className, apiParams}){
@@ -15,13 +17,40 @@ export default function QuizScreen({className, apiParams}){
     const [newGame, setNewGame] = useState(false)
     const [gameOver, setGameOver] = useState(false)
 
-    function answerCountHandler() {
-        setCorrectAnswersCounter(prevCount => prevCount = prevCount + 1)
+
+    //state to check for Answers in the card
+    const [userAnswers, setUserAnswers] = useState([])
+
+
+    function checkAnswers(){
+        let score = 0
+        quizData.forEach((card, index) => {
+            if(userAnswers[index] === card.correctAnswer) score++
+        })
+
+        setCorrectAnswersCounter(score)
+        setGameOver(true)
     }
 
+    function handleNewGame() {
+        setNewGame(prevGame => !prevGame)
+        setQuizIsLoading(true)
+        setGameOver(false)
+        setCorrectAnswersCounter(0)
+        setUserAnswers([])
+    }
+
+    function handleCheckAnswer(index, answer) {
+        setUserAnswers(prevAnswer => {
+            const newAnswers = [...prevAnswer]
+            newAnswers[index] = answer
+            return newAnswers
+        })
+    }
+
+    const {amount, difficulty, type, category} = apiParams
 
     useEffect(() => {
-        const {amount, difficulty, type, category} = apiParams
         async function fetchQuestionsFromAPI() {
             let amountProp = ''
             let diffProp = ''
@@ -66,8 +95,11 @@ export default function QuizScreen({className, apiParams}){
             key={index}
             id={card.id}
             gameOverState={gameOver}
-            answerCountHandler={answerCountHandler}
-            cardData={card}
+            question={card.question}
+            answer={card.correctAnswer}
+            incorrectAnswers={card.incorrectAnswers}
+            userAnswer={userAnswers[index]}
+            answerHandler={handleCheckAnswer}
             />
         )
     })
@@ -75,7 +107,15 @@ export default function QuizScreen({className, apiParams}){
     return (
         <main className={className}>
             {quizIsLoading && <div className="loader"><div className="loading--Animation"></div><LoadingSubTitle>Loading</LoadingSubTitle></div>}
-            {cardComponents}
+            {!quizIsLoading && cardComponents}
+            {gameOver && (
+                <>
+                <SubTitle>This Quiz is Over!</SubTitle>
+                <Paragraph>Correct Answers : {correctAnswersCounter} / {amount}</Paragraph>
+                <Button onClick={handleNewGame}>New Game</Button></>
+            )}
+
+            {(!gameOver && !quizIsLoading) && <SubmitButton onClick={checkAnswers}>Check Answers</SubmitButton>}
         </main>
     )
 }
