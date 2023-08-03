@@ -11,8 +11,7 @@ export default function Preferences({open, prefState, prefDispatch}){
 
     function handleChange(event) {
         const {name , value } = event.target
-        const newValue = name === "amount" ? value.toString() : value
-        prefDispatch({type: 'update', name, newValue})
+        prefDispatch({type: 'update', name, value})
        
      }
 
