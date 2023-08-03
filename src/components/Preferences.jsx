@@ -2,31 +2,25 @@ import RadioButton from './RadioButton'
 import { PrefButton } from '../styledComponents/Button'
 import CategoryData from '../../CategoryData'
 import { SubTitle } from '../styledComponents/SubTitle'
-import { useEffect } from 'react'
+import useEffectOnUpdate from '../services-hooks/useEffectOnUpdate'
 
-export default function Preferences({open, prefState, setPrefState}){
+export default function Preferences({open, prefState, prefDispatch}){
     // data arrays for mapping
     const numQues = [5, 10, 15, 20]
     const diff = ['easy', 'medium', 'hard']
 
-    const initialPrefState = {
-        amount : "",
-        difficulty : "",
-        type : "",
-        category : ""
-      }
-
     function handleChange(event) {
         const {name , value } = event.target
-        setPrefState(prevState => {
-            return {...prevState, [name] : value}
-        })
+        const newValue = name === "amount" ? value.toString() : value
+        prefDispatch({type: 'update', name, newValue})
        
      }
 
     function handlePrefReset() {
-        setPrefState(initialPrefState)
+        prefDispatch({type: 'reset'})
     }
+
+    useEffectOnUpdate(() => console.log(prefState), [prefState])
 
 
     const numQuesComponents = numQues.map(num => {

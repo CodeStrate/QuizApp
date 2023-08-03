@@ -1,7 +1,6 @@
-async function fetchQuestionsFromAPI(apiParams) {
+export default async function fetchQuestions(apiParams) {
 
     const {amount, difficulty, type, category} = apiParams
-
 
     let amountProp = ''
     let diffProp = ''
@@ -22,7 +21,7 @@ async function fetchQuestionsFromAPI(apiParams) {
 
     let apiURL = `https://opentdb.com/api.php?${amountProp}${categoryProp}${diffProp}${typeProp}`
 
-    return await fetch(apiURL).then(res => res.json()).then(data => data.results)
+    const res = await fetch(apiURL)
+    const data = await res.json()
+    return data.results
 }
-
-export default fetchQuestionsFromAPI;
