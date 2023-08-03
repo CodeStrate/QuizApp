@@ -24,10 +24,6 @@ export default function Preferences({open, prefState, setPrefState}){
        
      }
 
-    // useEffect(() => {
-    //     console.log(prefState)
-    // }, [prefState])
-
     function handlePrefReset() {
         setPrefState(initialPrefState)
     }
@@ -54,7 +50,7 @@ export default function Preferences({open, prefState, setPrefState}){
         variant={d}
         onChange={handleChange}
         checked={prefState.difficulty === d}    
-        >{d.charAt(0).toUpperCase() + d.slice(1)}
+        >{d[0].toUpperCase() + d.slice(1)}
         </RadioButton>
     })
     
