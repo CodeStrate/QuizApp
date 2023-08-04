@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-*{
-  font-family: 'Poppins', sans-serif;
+* {
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
-  padding: 0; margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   opacity: 0.001;
 }
 
-
-.title--screen{
+.title--screen {
   width: 100vw;
   height: 100vh;
   background: url(./assets/Background.svg);
@@ -23,18 +23,16 @@
 }
 
 @keyframes animatedBackground {
-
   from {
     background-position: 0 0;
   }
 
-  to{
+  to {
     background-position: 0 100%;
   }
-  
 }
 
-.container{
+.container {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -51,75 +49,77 @@
 }
 
 svg {
-  width: 4rem; height: 4rem;
+  width: 4rem;
+  height: 4rem;
   color: white;
   cursor: pointer;
   stroke: #316e58;
   stroke-width: 80px;
 }
 
-.icon:hover{
+.icon:hover {
   filter: brightness(95%);
 }
 
-.icon:active{
-  transform: scale(.8);
+.icon:active {
+  transform: scale(0.8);
 }
 
-.pref-container{
-    width: 500px;
-    height: 550px;
-    background-color: white;
-    position: absolute;
-    top: 140px;
-    left: 60px;
-    border-radius: 15px;
-    opacity: .9;
-    transition: all .5s ease-in-out;
-    padding: 30px;
-    overflow-y: scroll;
-    border: 3px solid #3C896D;
-    box-shadow: 0 6px #3C896D;
+.pref-container {
+  width: 500px;
+  height: 550px;
+  background-color: white;
+  position: absolute;
+  top: 140px;
+  left: 60px;
+  border-radius: 15px;
+  opacity: 0.9;
+  transition: all 0.5s ease-in-out;
+  padding: 30px;
+  overflow-y: scroll;
+  border: 3px solid #3c896d;
+  box-shadow: 0 6px #3c896d;
 }
 
 .close {
-    width: 0; height: 0;
-    opacity: 0;
-    transition: all .5s ease-in-out;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
 }
 
-hr{
-  border: 2px solid #3C896D;
+hr {
+  border: 2px solid #3c896d;
   border-radius: 10px;
 }
 
-.open{
+.open {
   transform: translateX(200px);
   transition: all 0.5s ease-in-out;
 }
 
-.music{
+.music {
   left: calc(100vw - 120px);
 }
 
-.buttons{
+.buttons {
   display: flex;
   justify-content: space-between;
 }
 
-.quiz{
+.quiz {
   width: 700px;
   height: 700px;
   background-color: white;
   border-radius: 15px;
   padding: 30px;
   overflow-y: scroll;
-  border: 3px solid #3C896D;
-  box-shadow: 0 6px #3C896D;
+  border: 3px solid #3c896d;
+  box-shadow: 0 6px #3c896d;
   justify-content: flex-start;
 }
 
-.loader{
+.loader {
   position: absolute;
   top: 45%;
   right: 50%;
@@ -129,14 +129,15 @@ hr{
   align-items: center;
 }
 
-.loading--Animation{
+.loading--Animation {
   background-color: white;
-  width: 70px; height: 70px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  border: 5px solid #3C896D;
-  animation: bounceTransform .5s ease-out infinite alternate;
-  animation-delay: .3s;
-  box-shadow: inset 1rem 1rem #3C896D;
+  border: 5px solid #3c896d;
+  animation: bounceTransform 0.5s ease-out infinite alternate;
+  animation-delay: 0.3s;
+  box-shadow: inset 1rem 1rem #3c896d;
 }
 
 @keyframes bounceTransform {
