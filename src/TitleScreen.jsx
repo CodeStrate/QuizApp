@@ -1,10 +1,10 @@
-import { useReducer } from "react";
 import "./App.css";
 
 //Components
 import { AiFillSetting, AiFillPlayCircle } from "react-icons/ai";
 import Preferences from "./components/Preferences";
 import useToggle from "./services-hooks/useToggle";
+import usePreferences from "./hooks/usePreferences";
 
 //styled Components
 import { Paragraph } from "./styledComponents/Paragraph";
@@ -13,36 +13,9 @@ import { Button } from "./styledComponents/Button";
 import QuizScreen from "./components/QuizScreen";
 
 function App() {
+  const { preferences, reset, update } = usePreferences();
   const [openPrefs, togglePrefs] = useToggle(false);
   const [isPlaying, togglePlaying] = useToggle(false);
-
-  const initialPrefState = {
-    amount: "5",
-    difficulty: "",
-    type: "",
-    category: "",
-  };
-
-  function prefReducer(state, action) {
-    switch (action.type) {
-      case "update":
-        return {
-          ...state,
-          [action.name]: action.value,
-        };
-      case "reset":
-        return {
-          amount: "5",
-          difficulty: "",
-          type: "",
-          category: "",
-        };
-      default:
-        return state;
-    }
-  }
-
-  const [apiPrefs, dispatch] = useReducer(prefReducer, initialPrefState);
 
   return (
     <main className="title--screen">
@@ -54,14 +27,15 @@ function App() {
       </span>
       <Preferences
         open={openPrefs}
-        prefState={apiPrefs}
-        prefDispatch={(action) => dispatch(action)}
+        preferences={preferences}
+        reset={reset}
+        update={update}
       />
 
       {isPlaying ? (
         <QuizScreen
           className={`container quiz ${openPrefs && "open"}`}
-          apiParams={apiPrefs}
+          apiParams={preferences}
         />
       ) : (
         <div className={`container ${openPrefs && "open"}`}>

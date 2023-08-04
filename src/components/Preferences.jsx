@@ -2,108 +2,90 @@ import RadioButton from "./RadioButton";
 import { PrefButton } from "../styledComponents/Button";
 import CategoryData from "../../CategoryData";
 import { SubTitle } from "../styledComponents/SubTitle";
-import useEffectOnUpdate from "../services-hooks/useEffectOnUpdate";
 
-export default function Preferences({ open, prefState, prefDispatch }) {
-  // data arrays for mapping
-  const numQues = [5, 10, 15, 20];
-  const diff = ["easy", "medium", "hard"];
+const QUESTION_COUNT = [5, 10, 15, 20];
+const DIFFICULTIES = ["easy", "medium", "hard"];
 
-  function handleChange(event) {
+export default function Preferences({ open, preferences, reset, update }) {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    prefDispatch({ type: "update", name, value });
-  }
 
-  function handlePrefReset() {
-    prefDispatch({ type: "reset" });
-  }
-
-  useEffectOnUpdate(() => console.log(prefState), [prefState]);
-
-  const numQuesComponents = numQues.map((num) => {
-    return (
-      <RadioButton
-        key={`key_${num}`}
-        id={`${num}ques`}
-        name="amount"
-        value={num}
-        onChange={handleChange}
-        checked={prefState.amount === num.toString()}
-      >
-        {num}
-      </RadioButton>
-    );
-  });
-
-  const diffComponents = diff.map((d, index) => {
-    return (
-      <RadioButton
-        key={index}
-        id={`${d}ques`}
-        name="difficulty"
-        value={d}
-        variant={d}
-        onChange={handleChange}
-        checked={prefState.difficulty === d}
-      >
-        {d[0].toUpperCase() + d.slice(1)}
-      </RadioButton>
-    );
-  });
-
-  const categoryComponents = CategoryData.map((item) => {
-    return (
-      <RadioButton
-        key={item.ID}
-        id={`category${item.CategoryID}`}
-        name="category"
-        value={item.CategoryID}
-        onChange={handleChange}
-        checked={prefState.category === item.CategoryID.toString()}
-      >
-        {item.CategoryName}
-      </RadioButton>
-    );
-  });
-
-  const typeComponents = [
-    <RadioButton
-      key={1}
-      id="multi"
-      name="type"
-      value="multiple"
-      onChange={handleChange}
-      checked={prefState.type === "multiple"}
-    >
-      Multiple
-    </RadioButton>,
-
-    <RadioButton
-      key={2}
-      id="bool"
-      name="type"
-      value="boolean"
-      onChange={handleChange}
-      checked={prefState.type === "boolean"}
-    >
-      Boolean
-    </RadioButton>,
-  ];
+    update(name, value);
+  };
 
   return (
     <div className={`pref-container ${open ? "" : "close"}`}>
       <SubTitle>Number of Questions</SubTitle>
-      {numQuesComponents}
+      {QUESTION_COUNT.map((num) => (
+        <RadioButton
+          key={`key_${num}`}
+          id={`${num}ques`}
+          name="amount"
+          value={num}
+          onChange={handleChange}
+          checked={preferences.amount === num}
+        >
+          {num}
+        </RadioButton>
+      ))}
       <SubTitle>Difficulty</SubTitle>
-      {diffComponents}
+      {DIFFICULTIES.map((difficulty, index) => (
+        <RadioButton
+          key={index}
+          id={`${difficulty}ques`}
+          name="difficulty"
+          value={difficulty}
+          variant={difficulty}
+          onChange={handleChange}
+          checked={preferences.difficulty === difficulty}
+        >
+          <span style={{ textTransform: "capitalize" }}>{difficulty}</span>
+        </RadioButton>
+      ))}
       <SubTitle>Type</SubTitle>
-      {typeComponents}
+      <RadioButton
+        key={1}
+        id="multi"
+        name="type"
+        value="multiple"
+        onChange={handleChange}
+        checked={preferences.type === "multiple"}
+      >
+        Multiple
+      </RadioButton>
+      <RadioButton
+        key={2}
+        id="bool"
+        name="type"
+        value="boolean"
+        onChange={handleChange}
+        checked={preferences.type === "boolean"}
+      >
+        Boolean
+      </RadioButton>
       <SubTitle>Category</SubTitle>
-      {categoryComponents}
+      {CategoryData.map((item) => (
+        <RadioButton
+          key={item.ID}
+          id={`category${item.CategoryID}`}
+          name="category"
+          value={item.CategoryID}
+          onChange={handleChange}
+          checked={preferences.category === item.CategoryID.toString()}
+        >
+          {item.CategoryName}
+        </RadioButton>
+      ))}
       <hr></hr>
       <div className="buttons">
+        {/* 
+          - Does this button really needed?.
+          - We save the changes on every value change.
+          - If you only want to save the changes on button click, you might consider using a From
+          and handle the submit event where you can gather the data from the form and save it into your reducer
+        */}
         <PrefButton>Save Prefs</PrefButton>
-        <PrefButton onClick={handlePrefReset}>Reset Prefs</PrefButton>
+        <PrefButton onClick={reset}>Reset Prefs</PrefButton>
       </div>
     </div>
   );
