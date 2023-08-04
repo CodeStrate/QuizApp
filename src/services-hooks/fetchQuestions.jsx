@@ -1,26 +1,17 @@
-export default async function fetchQuestions(apiParams) {
+export default async function fetchQuestions(apiParams, signal) {
   const { amount, difficulty, type, category } = apiParams;
 
-  let amountProp = "";
-  let diffProp = "";
-  let typeProp = "";
-  let categoryProp = "";
-  if (amount !== "") {
-    amountProp = `amount=${amount}`;
-  }
-  if (category !== "") {
-    categoryProp = `&category=${category}`;
-  }
-  if (difficulty !== "") {
-    diffProp = `&difficulty=${difficulty}`;
-  }
-  if (type !== "") {
-    typeProp = `&type=${type}`;
-  }
+  const searchParams = new URLSearchParams({
+    amount,
+    category,
+    difficulty,
+    typeProp: type,
+  });
 
-  let apiURL = `https://opentdb.com/api.php?${amountProp}${categoryProp}${diffProp}${typeProp}`;
-
-  const res = await fetch(apiURL);
+  const res = await fetch(`https://opentdb.com/api.php?${searchParams}`, {
+    signal,
+  });
   const data = await res.json();
+
   return data.results;
 }
