@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
-import fetchQuestions from "../services-hooks/fetchQuestions";
+import fetchQuestions from "./fetchQuestions";
+import { nanoid } from "nanoid";
+import { decode } from "he";
 
 export const RequestStatus = {
   Idle: "idle",
@@ -22,9 +24,30 @@ const useQuizData = (apiParams) => {
 
       fetchQuestions(apiParams, controller.signal)
         .then((data) => {
-          console.log(data);
-          // Do your mapping here
-          setQuizData([]);
+
+          const quesData = data.map((d) => {
+            const answer = {
+              id: nanoid(),
+              value: decode(d.correct_answer)
+            }
+
+            const options = d.incorrect_answers.map(e => ({
+              id: nanoid(),
+              value: decode(e,)
+            }))
+
+            options.push(answer)
+            options.sort(() => Math.random() - 0.5)
+
+            return {
+              id: nanoid(),
+              question : decode(d.question),
+              answer,
+              options,
+            }
+          });
+
+          setQuizData(quesData);
           setError(null);
           setGameIsRunning(true);
           setStatus(false);

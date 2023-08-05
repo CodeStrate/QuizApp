@@ -2,11 +2,9 @@
 
 import { LoadingSubTitle, SubTitle } from "../styledComponents/SubTitle";
 import { Card } from "./Card";
-import { nanoid } from "nanoid";
-import { decode } from "he";
 import { Button, SubmitButton } from "../styledComponents/Button";
 import { Paragraph } from "../styledComponents/Paragraph";
-import useQuizData, { RequestStatus } from "../hooks/useQuizData";
+import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
 
 export default function QuizScreen({ className, apiParams }) {
   const {
@@ -32,10 +30,19 @@ export default function QuizScreen({ className, apiParams }) {
   if (status === RequestStatus.Rejected && error) {
     return (
       <main className={className}>
-        <div>Something went wrong!</div>
+        <SubTitle>Something went wrong!</SubTitle>
       </main>
     );
   }
 
-  return <main className={className}>{JSON.stringify(quizData)}</main>;
+  const cards = quizData.map(quiz => {
+    return <Card
+            key={quiz.id}
+            id={quiz.id}
+            question={quiz.question}
+            answer={quiz.answer}
+            options={quiz.options} />
+  })
+
+  return <main className={className}>{gameIsRunning && cards}</main>;
 }

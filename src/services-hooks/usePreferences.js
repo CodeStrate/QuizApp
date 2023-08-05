@@ -3,7 +3,7 @@ import { useCallback, useReducer, useMemo } from "react";
 const initialPrefState = {
   amount: 5,
   difficulty: "easy",
-  type: "boolean",
+  type: "multiple",
   category: "9",
 };
 

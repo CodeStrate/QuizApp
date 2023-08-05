@@ -4,7 +4,7 @@ import "./App.css";
 import { AiFillSetting, AiFillPlayCircle } from "react-icons/ai";
 import Preferences from "./components/Preferences";
 import useToggle from "./services-hooks/useToggle";
-import usePreferences from "./hooks/usePreferences";
+import usePreferences from "./services-hooks/usePreferences";
 
 //styled Components
 import { Paragraph } from "./styledComponents/Paragraph";

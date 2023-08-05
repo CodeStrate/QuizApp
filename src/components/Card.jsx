@@ -1,13 +1,26 @@
 import { CardQuestionParagraph } from "../styledComponents/Paragraph";
 import "./Card.css";
 import RadioButton from "./RadioButton";
-import { useEffect, useState } from "react";
 
-export const Card = ({}) => {
+export const Card = ({question, answer, options, id}) => {
+
+  const RadioOptions = options.map(o => (
+    <RadioButton
+    key={o.id}
+    id={o.id}
+    name={`options_${id}`}
+    value={o.value}
+    variant='options'
+    >
+    {o.value}
+    </RadioButton>
+    
+  ))
+
   return (
     <div className="card">
       <CardQuestionParagraph>{question}</CardQuestionParagraph>
-      <div className="option-container">{optionRadioComponents}</div>
+      <div className="option-container">{RadioOptions}</div>
     </div>
   );
 };
