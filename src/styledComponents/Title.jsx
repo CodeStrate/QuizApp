@@ -1,13 +1,12 @@
-import { keyframes, styled } from 'styled-components'
+import { keyframes, styled } from "styled-components";
 
 const sineWave = keyframes`
 to {
   transform: translatey(10px);
 }
-`
+`;
 
-export const Title = styled.h1
-`
+export const Title = styled.h1`
   font-size: 3rem;
   font-weight: 700;
   color: white;
@@ -19,4 +18,4 @@ export const Title = styled.h1
   line-height: 110%;
 
   animation: ${sineWave} 1.2s infinite alternate linear;
-`
+`;

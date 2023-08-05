@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-*{
-  font-family: 'Poppins', sans-serif;
+* {
+  font-family: "Poppins", sans-serif;
 }
 
 .radio-button {
@@ -11,10 +11,10 @@
   height: 0;
 }
 
-.radio-button + label{
+.radio-button + label {
   display: inline-block;
   padding: 3px;
-  border: 2px solid #3C896D;
+  border: 2px solid #3c896d;
   cursor: pointer;
   border-radius: 8px;
   font-weight: 500;
@@ -22,47 +22,47 @@
 }
 
 .radio-button:checked + label {
-  border-color: #77BFA3;
-  background-color: #98C9A3;
+  border-color: #77bfa3;
+  background-color: #98c9a3;
   color: white;
 }
 
 .radio-button:focus + label {
-  border: 2px dashed #3C896D;
+  border: 2px dashed #3c896d;
 }
 
-.radio-button + label:hover{
-  background-color: #9DDBAD;
+.radio-button + label:hover {
+  background-color: #9ddbad;
 }
 
-.medium + label{
-  border-color: #FC9E4F;
+.medium + label {
+  border-color: #fc9e4f;
 }
 
 .medium:checked + label {
-  border-color: #FC9E4F;
+  border-color: #fc9e4f;
   background-color: #fdda72;
   color: white;
 }
 
 .medium:focus + label {
-  border: 2px dashed #FC9E4F;
+  border: 2px dashed #fc9e4f;
 }
 
-.medium + label:hover{
+.medium + label:hover {
   background-color: #ffeba9;
 }
 
-.hard + label{
-  border-color: #E87461;
+.hard + label {
+  border-color: #e87461;
 }
 
-.hard + label:hover{
-    background-color: #fca092;
+.hard + label:hover {
+  background-color: #fca092;
 }
 
 .hard:checked + label {
-  border-color: #E87461;
+  border-color: #e87461;
   background-color: #f97a7a;
   color: white;
 }
@@ -73,15 +73,15 @@
 
 .options + label {
   border-width: 3px;
-  font-size: .8rem;
+  font-size: 0.8rem;
   text-align: center;
   width: 150px;
   padding: 8px;
   align-self: center;
 }
 
-.options:checked + label{
-  border-color: #77BFA3;
-  background-color: #98C9A3;
+.options:checked + label {
+  border-color: #77bfa3;
+  background-color: #98c9a3;
   color: white;
 }
