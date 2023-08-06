@@ -8,8 +8,6 @@ const preferencesReducer = (state, action) => {
         ...state,
         [action.name]: action.value,
       };
-    case "add_new":
-      return state[action.name] = action.value
     case "reset":
       return initialState;
     default:
@@ -31,18 +29,14 @@ const usePreferences = (initialState = null) => {
     dispatch({ type: "update", name, value });
   }, []);
 
-  const addNew = useCallback((name, value) => {
-    dispatch({ type: "add_new", name, value });
-  }, []);
 
   return useMemo(
     () => ({
       preferences,
       reset,
       update,
-      addNew,
     }),
-    [preferences, reset, update, addNew]
+    [preferences, reset, update]
   );
 };
 

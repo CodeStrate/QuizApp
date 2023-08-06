@@ -28,12 +28,14 @@ const useQuizData = (apiParams) => {
           const quesData = data.map((d) => {
             const answer = {
               id: nanoid(),
-              value: decode(d.correct_answer)
+              value: decode(d.correct_answer),
+              selected: false
             }
 
             const options = d.incorrect_answers.map(e => ({
               id: nanoid(),
-              value: decode(e)
+              value: decode(e),
+              selected: false
             }))
 
             options.push(answer)

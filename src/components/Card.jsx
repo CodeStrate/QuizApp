@@ -1,21 +1,12 @@
-import usePreferences from "../services-hooks/usePreferences";
-import useEffectOnUpdate from "../services-hooks/useEffectOnUpdate";
 import { CardQuestionParagraph } from "../styledComponents/Paragraph";
 import "./Card.css";
 import RadioButton from "./RadioButton";
 
 export const Card = ({question, answer, options, questionId}) => {
 
-  const {preferences, update, addNew} = usePreferences({})
 
-  const selectOption = (event) => {
-    const {name, value, id} = event.target
-    const option = {id, value}
-    
-    update(name, option)
+  const selectOption = (optionID) => {
   }
-
-  useEffectOnUpdate(() => console.log(preferences), [preferences])
 
   const RadioOptions = options.map(o => (
     <RadioButton
@@ -24,7 +15,6 @@ export const Card = ({question, answer, options, questionId}) => {
     name={questionId}
     value={o.value}
     variant='options'
-    onChange={selectOption}
     >
     {o.value}
     </RadioButton>
