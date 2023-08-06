@@ -37,8 +37,8 @@ export default function QuizScreen({ className, apiParams }) {
 
   const cards = quizData.map(quiz => {
     return <Card
-            key={quiz.id}
-            id={quiz.id}
+            key={quiz.question_id}
+            questionId={quiz.question_id}
             question={quiz.question}
             answer={quiz.answer}
             options={quiz.options} />

@@ -33,14 +33,14 @@ const useQuizData = (apiParams) => {
 
             const options = d.incorrect_answers.map(e => ({
               id: nanoid(),
-              value: decode(e,)
+              value: decode(e)
             }))
 
             options.push(answer)
             options.sort(() => Math.random() - 0.5)
 
             return {
-              id: nanoid(),
+              question_id: nanoid(),
               question : decode(d.question),
               answer,
               options,

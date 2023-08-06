@@ -1,11 +1,5 @@
 import { useCallback, useReducer, useMemo } from "react";
 
-const initialPrefState = {
-  amount: 5,
-  difficulty: "easy",
-  type: "multiple",
-  category: "9",
-};
 
 const preferencesReducer = (state, action) => {
   switch (action.type) {
@@ -15,16 +9,16 @@ const preferencesReducer = (state, action) => {
         [action.name]: action.value,
       };
     case "reset":
-      return initialPrefState;
+      return initialState;
     default:
       return state;
   }
 };
 
-const usePreferences = () => {
+const usePreferences = (initialState = null, selectedValue = null) => {
   const [preferences, dispatch] = useReducer(
     preferencesReducer,
-    initialPrefState
+    initialState
   );
 
   const reset = useCallback(() => {

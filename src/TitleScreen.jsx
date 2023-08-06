@@ -13,7 +13,12 @@ import { Button } from "./styledComponents/Button";
 import QuizScreen from "./components/QuizScreen";
 
 function App() {
-  const { preferences, reset, update } = usePreferences();
+  const { preferences, reset, update } = usePreferences({
+    amount: 5,
+    difficulty: "easy",
+    type: "multiple",
+    category: "9",
+  });
   const [openPrefs, togglePrefs] = useToggle(false);
   const [isPlaying, togglePlaying] = useToggle(false);
 
