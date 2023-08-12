@@ -1,11 +1,18 @@
 import { CardQuestionParagraph } from "../styledComponents/Paragraph";
 import "./Card.css";
 import RadioButton from "./RadioButton";
+import { forwardRef, useImperativeHandle } from "react";
 
-export const Card = ({question, answer, options, questionId}) => {
+export const Card = forwardRef(({question, options, questionId, selectOption, selectedOptionID, answer}, ref) => {
+  
+  useImperativeHandle(ref, () => ({
+    handleAnswer : handleClassNames,
+  }))
 
+  let cardClass = handleClassNames()
 
-  const selectOption = (optionID) => {
+  const handleClassNames = () => {
+    return selectedOptionID === answer.id ? "medium" : "hard"
   }
 
   const RadioOptions = options.map(o => (
@@ -14,7 +21,9 @@ export const Card = ({question, answer, options, questionId}) => {
     id={o.id}
     name={questionId}
     value={o.value}
-    variant='options'
+    variant={`options ${cardClass}`}
+    onChange={() => selectOption(questionId, o.id)}
+    checked={selectedOptionID === o.id}
     >
     {o.value}
     </RadioButton>
@@ -27,4 +36,4 @@ export const Card = ({question, answer, options, questionId}) => {
       <div className="option-container">{RadioOptions}</div>
     </div>
   );
-};
+});

@@ -29,13 +29,13 @@ const useQuizData = (apiParams) => {
             const answer = {
               id: nanoid(),
               value: decode(d.correct_answer),
-              selected: false
+        
             }
 
             const options = d.incorrect_answers.map(e => ({
               id: nanoid(),
               value: decode(e),
-              selected: false
+        
             }))
 
             options.push(answer)
@@ -46,6 +46,7 @@ const useQuizData = (apiParams) => {
               question : decode(d.question),
               answer,
               options,
+              selectedOptionID : "",
             }
           });
 
