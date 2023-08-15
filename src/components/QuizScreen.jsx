@@ -9,6 +9,7 @@ export default function QuizScreen({ className, apiParams }) {
   const {
     data,
     error,
+    finish,
     gameIsRunning,
     selectOption,
     restart,
@@ -31,34 +32,33 @@ export default function QuizScreen({ className, apiParams }) {
   if (status === RequestStatus.Rejected && error) {
     return (
       <main className={className}>
-        <SubTitle>Something went wrong!</SubTitle>
+        <SubTitle>Something went wrong! {error?.message}</SubTitle>
       </main>
     );
   }
 
   return (
     <main className={className}>
-      {gameIsRunning
-        ? data.map((quiz) => (
-            <Card
-              gameRunningState={gameIsRunning}
-              key={quiz.questionId}
-              questionId={quiz.questionId}
-              question={quiz.question}
-              options={quiz.options}
-              selectedOptionID={quiz.selectedOptionId}
-              selectOption={selectOption}
-              answer={quiz.answer}
-            />
-          ))
-        : null}
-      <SubmitButton
-        onClick={() => {
-          // TODO: implement
-        }}
-      >
-        Check Answers
-      </SubmitButton>
+      {data?.map((quiz) => (
+        <Card
+          gameRunningState={gameIsRunning}
+          key={quiz.questionId}
+          questionId={quiz.questionId}
+          question={quiz.question}
+          options={quiz.options}
+          selectedOptionID={quiz.selectedOptionId}
+          selectOption={selectOption}
+          answer={quiz.answer}
+        />
+      ))}
+      {gameIsRunning ? (
+        <SubmitButton onClick={finish}>Check Answers</SubmitButton>
+      ) : (
+        <>
+          <SubmitButton onClick={newGame}>New Game</SubmitButton>
+          <SubmitButton onClick={restart}>Retry</SubmitButton>
+        </>
+      )}
     </main>
   );
 }
