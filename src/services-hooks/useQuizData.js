@@ -110,6 +110,15 @@ const quizDataReducer = (state, action) => {
       return { ...state, data };
     }
 
+    case "finish":
+      if (!state.gameIsRunning) return state;
+
+      return {
+        ...state,
+        gameIsRunning: false,
+        score: calculateScore(state.data),
+      };
+
     default:
       return state;
   }
@@ -147,6 +156,10 @@ const useQuizData = (apiParams) => {
     dispatch({ type: "select-option", payload: { questionId, optionId } });
   }, []);
 
+  const finish = useCallback(() => {
+    dispatch({ type: "finish" });
+  }, []);
+
   useEffect(() => {
     if (controllerRef.current.signal.aborted) {
       controllerRef.current = new AbortController();
@@ -163,6 +176,7 @@ const useQuizData = (apiParams) => {
     () => ({
       data,
       error,
+      finish,
       gameIsRunning,
       newGame,
       restart,
@@ -170,7 +184,17 @@ const useQuizData = (apiParams) => {
       selectOption,
       status,
     }),
-    [data, error, gameIsRunning, restart, score, selectOption, newGame, status]
+    [
+      data,
+      error,
+      finish,
+      gameIsRunning,
+      restart,
+      score,
+      selectOption,
+      newGame,
+      status,
+    ]
   );
 };
 
