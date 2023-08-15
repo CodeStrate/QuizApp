@@ -4,7 +4,6 @@ import { LoadingSubTitle, SubTitle } from "../styledComponents/SubTitle";
 import { Card } from "./Card";
 import { Button, SubmitButton } from "../styledComponents/Button";
 import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
-import { useRef } from "react";
 
 export default function QuizScreen({ className, apiParams }) {
   const {
@@ -15,8 +14,6 @@ export default function QuizScreen({ className, apiParams }) {
     setQuizData,
     quizData,
   } = useQuizData(apiParams);
-
-  const cardRef = useRef();
 
   const selectOption = (queID, optionId) => {
     const selectedOptionState = quizData.map((ques) => {
@@ -50,7 +47,7 @@ export default function QuizScreen({ className, apiParams }) {
 
   const cards = quizData.map(quiz => {
     return <Card
-            ref = {cardRef}
+            gameRunningState={gameIsRunning}
             key={quiz.question_id}
             questionId={quiz.question_id}
             question={quiz.question}
@@ -64,7 +61,7 @@ export default function QuizScreen({ className, apiParams }) {
   return (
   <main className={className}>
     {gameIsRunning && cards}
-    <SubmitButton onClick={() => cardRef.current.handleAnswer()}>Check Answers</SubmitButton>
+    <SubmitButton onClick={() => setGameIsRunning(false)}>Check Answers</SubmitButton>
     </main>
     
     );

@@ -1,15 +1,12 @@
 import { CardQuestionParagraph } from "../styledComponents/Paragraph";
 import "./Card.css";
 import RadioButton from "./RadioButton";
-import { forwardRef, useImperativeHandle } from "react";
 
-export const Card = forwardRef(({question, options, questionId, selectOption, selectedOptionID, answer}, ref) => {
+export const Card = ({question, options, questionId, selectOption, selectedOptionID, answer, gameRunningState}) => {
   
-  useImperativeHandle(ref, () => ({
-    handleAnswer : handleClassNames,
-  }))
 
-  let cardClass = handleClassNames()
+
+  let cardClass = gameRunningState ? "" : handleClassNames()
 
   const handleClassNames = () => {
     return selectedOptionID === answer.id ? "medium" : "hard"
@@ -36,4 +33,4 @@ export const Card = forwardRef(({question, options, questionId, selectOption, se
       <div className="option-container">{RadioOptions}</div>
     </div>
   );
-});
+}
