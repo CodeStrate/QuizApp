@@ -41,20 +41,24 @@ export default function QuizScreen({ className, apiParams }) {
     <main className={className}>
       {data?.map((quiz) => (
         <Card
-          gameRunningState={gameIsRunning}
+          gameIsRunning={gameIsRunning}
+          difficulty={apiParams.difficulty}
           key={quiz.questionId}
           questionId={quiz.questionId}
           question={quiz.question}
           options={quiz.options}
-          selectedOptionID={quiz.selectedOptionId}
+          selectedOptionId={quiz.selectedOptionId}
           selectOption={selectOption}
-          answer={quiz.answer}
+          answerId={quiz.answer.id}
         />
       ))}
       {gameIsRunning ? (
         <SubmitButton onClick={finish}>Check Answers</SubmitButton>
       ) : (
         <>
+          <p>
+            Your score is {data.length}/{score}
+          </p>
           <SubmitButton onClick={newGame}>New Game</SubmitButton>
           <SubmitButton onClick={restart}>Retry</SubmitButton>
         </>
