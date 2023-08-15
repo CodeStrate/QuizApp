@@ -3,6 +3,18 @@ import fetchQuestions from "./fetchQuestions";
 import { nanoid } from "nanoid";
 import { decode } from "he";
 
+const calculateScore = (data) => {
+  if (!data) return 0;
+
+  return data.reduce((acc, d) => {
+    if (d.selectedOptionId === d.answer.id) {
+      return acc + 1;
+    }
+
+    return acc;
+  }, 0);
+};
+
 const createOption = (value) => ({
   id: nanoid(),
   value: decode(value),
@@ -38,6 +50,7 @@ const getInitialState = () => ({
   backupData: null,
   data: null,
   error: null,
+  score: 0,
 });
 
 const quizDataReducer = (state, action) => {
@@ -45,6 +58,7 @@ const quizDataReducer = (state, action) => {
     case "start":
       return {
         ...state,
+        score: 0,
         status: RequestStatus.Pending,
         gameIsRunning: true,
         backupData: null,
@@ -55,6 +69,7 @@ const quizDataReducer = (state, action) => {
     case "error":
       return {
         ...state,
+        score: 0,
         status: RequestStatus.Rejected,
         gameIsRunning: false,
         backupData: null,
@@ -65,6 +80,7 @@ const quizDataReducer = (state, action) => {
     case "success":
       return {
         ...state,
+        score: 0,
         status: RequestStatus.Resolved,
         gameIsRunning: true,
         data: action.payload,
@@ -101,7 +117,7 @@ const quizDataReducer = (state, action) => {
 
 const useQuizData = (apiParams) => {
   const [state, dispatch] = useReducer(quizDataReducer, getInitialState());
-  const { data, error, gameIsRunning, status } = state;
+  const { data, error, gameIsRunning, score, status } = state;
   const controllerRef = useRef(new AbortController());
 
   const newGame = useCallback(
@@ -149,11 +165,12 @@ const useQuizData = (apiParams) => {
       error,
       gameIsRunning,
       newGame,
+      restart,
+      score,
       selectOption,
       status,
-      restart,
     }),
-    [data, error, gameIsRunning, restart, selectOption, newGame, status]
+    [data, error, gameIsRunning, restart, score, selectOption, newGame, status]
   );
 };
 
