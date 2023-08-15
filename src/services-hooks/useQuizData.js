@@ -35,6 +35,7 @@ export const RequestStatus = {
 const getInitialState = () => ({
   status: RequestStatus.Idle,
   gameIsRunning: false,
+  backupData: null,
   data: null,
   error: null,
 });
@@ -45,7 +46,8 @@ const quizDataReducer = (state, action) => {
       return {
         ...state,
         status: RequestStatus.Pending,
-        gameIsRunning: false,
+        gameIsRunning: true,
+        backupData: null,
         data: null,
         error: null,
       };
@@ -55,6 +57,7 @@ const quizDataReducer = (state, action) => {
         ...state,
         status: RequestStatus.Rejected,
         gameIsRunning: false,
+        backupData: null,
         data: null,
         error: action.payload,
       };
@@ -65,7 +68,16 @@ const quizDataReducer = (state, action) => {
         status: RequestStatus.Resolved,
         gameIsRunning: true,
         data: action.payload,
+        backupData: action.payload,
         error: null,
+      };
+
+    case "restart":
+      return {
+        ...state,
+        score: 0,
+        gameIsRunning: true,
+        data: state.backupData,
       };
 
     case "select-option": {
@@ -111,6 +123,10 @@ const useQuizData = (apiParams) => {
     [apiParams]
   );
 
+  const restart = useCallback(() => {
+    dispatch({ type: "restart" });
+  }, []);
+
   const selectOption = useCallback((questionId, optionId) => {
     dispatch({ type: "select-option", payload: { questionId, optionId } });
   }, []);
@@ -135,8 +151,9 @@ const useQuizData = (apiParams) => {
       newGame,
       selectOption,
       status,
+      restart,
     }),
-    [data, error, gameIsRunning, newGame, selectOption, status]
+    [data, error, gameIsRunning, restart, selectOption, newGame, status]
   );
 };
 
