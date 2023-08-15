@@ -3,6 +3,28 @@ import fetchQuestions from "./fetchQuestions";
 import { nanoid } from "nanoid";
 import { decode } from "he";
 
+const createOption = (value) => ({
+  id: nanoid(),
+  value: decode(value),
+});
+
+// Could be called transformer or mapper doesn't matter
+const quizDataUnmarshaller = (data) => {
+  const answer = createOption(data.correct_answer);
+
+  const options = data.incorrect_answers.map(createOption);
+  options.push(answer);
+  options.sort(() => Math.random() - 0.5);
+
+  return {
+    questionId: nanoid(),
+    question: decode(data.question),
+    answer,
+    options,
+    selectedOptionId: "",
+  };
+};
+
 export const RequestStatus = {
   Idle: "idle",
   Pending: "pending",
@@ -75,30 +97,9 @@ const useQuizData = (apiParams) => {
       dispatch({ type: "start" });
       fetchQuestions(apiParams, signal)
         .then((data) => {
-          const quesData = data.map((d) => {
-            const answer = {
-              id: nanoid(),
-              value: decode(d.correct_answer),
-            };
+          const payload = data.map(quizDataUnmarshaller);
 
-            const options = d.incorrect_answers.map((e) => ({
-              id: nanoid(),
-              value: decode(e),
-            }));
-
-            options.push(answer);
-            options.sort(() => Math.random() - 0.5);
-
-            return {
-              questionId: nanoid(),
-              question: decode(d.question),
-              answer,
-              options,
-              selectedOptionId: "",
-            };
-          });
-
-          dispatch({ type: "success", payload: quesData });
+          dispatch({ type: "success", payload });
         })
         .catch((error) => {
           // ignore the error if it is abort error
