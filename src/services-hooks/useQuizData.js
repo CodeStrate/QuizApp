@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useReducer, useCallback, useRef } from "react";
 import fetchQuestions from "./fetchQuestions";
 import { nanoid } from "nanoid";
 import { decode } from "he";
@@ -10,76 +10,132 @@ export const RequestStatus = {
   Resolved: "resolved",
 };
 
+const getInitialState = () => ({
+  status: RequestStatus.Idle,
+  gameIsRunning: false,
+  data: null,
+  error: null,
+});
+
+const quizDataReducer = (state, action) => {
+  switch (action.type) {
+    case "start":
+      return {
+        ...state,
+        status: RequestStatus.Pending,
+        gameIsRunning: false,
+        data: null,
+        error: null,
+      };
+
+    case "error":
+      return {
+        ...state,
+        status: RequestStatus.Rejected,
+        gameIsRunning: false,
+        data: null,
+        error: action.payload,
+      };
+
+    case "success":
+      return {
+        ...state,
+        status: RequestStatus.Resolved,
+        gameIsRunning: true,
+        data: action.payload,
+        error: null,
+      };
+
+    case "select-option": {
+      if (!state.gameIsRunning) return state;
+
+      const data = state.data.map((q) => {
+        if (q.questionId === action.payload.questionId) {
+          return { ...q, selectedOptionId: action.payload.optionId };
+        }
+
+        return q;
+      });
+
+      return { ...state, data };
+    }
+
+    default:
+      return state;
+  }
+};
+
 const useQuizData = (apiParams) => {
-  const [status, setStatus] = useState(RequestStatus.Idle);
-  const [gameIsRunning, setGameIsRunning] = useState(false);
-  const [quizData, setQuizData] = useState(null);
-  const [error, setError] = useState(null);
+  const [state, dispatch] = useReducer(quizDataReducer, getInitialState());
+  const { data, error, gameIsRunning, status } = state;
+  const controllerRef = useRef(new AbortController());
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    if (!gameIsRunning) {
-      setStatus(RequestStatus.Pending);
-
-      fetchQuestions(apiParams, controller.signal)
+  const newGame = useCallback(
+    ({ signal }) => {
+      dispatch({ type: "start" });
+      fetchQuestions(apiParams, signal)
         .then((data) => {
-
           const quesData = data.map((d) => {
             const answer = {
               id: nanoid(),
               value: decode(d.correct_answer),
-        
-            }
+            };
 
-            const options = d.incorrect_answers.map(e => ({
+            const options = d.incorrect_answers.map((e) => ({
               id: nanoid(),
               value: decode(e),
-        
-            }))
+            }));
 
-            options.push(answer)
-            options.sort(() => Math.random() - 0.5)
+            options.push(answer);
+            options.sort(() => Math.random() - 0.5);
 
             return {
-              question_id: nanoid(),
-              question : decode(d.question),
+              questionId: nanoid(),
+              question: decode(d.question),
               answer,
               options,
-              selectedOptionID : "",
-            }
+              selectedOptionId: "",
+            };
           });
 
-          setQuizData(quesData);
-          setError(null);
-          setGameIsRunning(true);
-          setStatus(false);
+          dispatch({ type: "success", payload: quesData });
         })
         .catch((error) => {
           // ignore the error if it is abort error
           if (!(error instanceof DOMException && error.name == "AbortError")) {
-            setError(error);
-            setGameIsRunning(false);
-            setStatus(false);
+            dispatch({ type: "error", payload: error });
           }
         });
+    },
+    [apiParams]
+  );
+
+  const selectOption = useCallback((questionId, optionId) => {
+    dispatch({ type: "select-option", payload: { questionId, optionId } });
+  }, []);
+
+  useEffect(() => {
+    if (controllerRef.current.signal.aborted) {
+      controllerRef.current = new AbortController();
     }
 
+    newGame({ signal: controllerRef.current.signal });
+
     return () => {
-      controller.abort();
+      controllerRef.current.abort();
     };
-  }, [apiParams, gameIsRunning]);
+  }, [newGame]);
 
   return useMemo(
     () => ({
+      data,
       error,
-      quizData,
-      setQuizData,
       gameIsRunning,
-      setGameIsRunning,
+      newGame,
+      selectOption,
       status,
     }),
-    [error, quizData, gameIsRunning, status]
+    [data, error, gameIsRunning, newGame, selectOption, status]
   );
 };
 
