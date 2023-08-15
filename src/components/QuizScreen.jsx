@@ -17,14 +17,14 @@ export default function QuizScreen({ className, apiParams }) {
 
   const selectOption = (queID, optionId) => {
     const selectedOptionState = quizData.map((ques) => {
-      if (ques.question_id === queID){
-        return {...ques, selectedOptionID : optionId};
+      if (ques.question_id === queID) {
+        return { ...ques, selectedOptionID: optionId };
       }
       return ques;
     });
 
     setQuizData(selectedOptionState);
-  }
+  };
 
   if (status === RequestStatus.Pending || status === RequestStatus.Idle) {
     return (
@@ -45,24 +45,27 @@ export default function QuizScreen({ className, apiParams }) {
     );
   }
 
-  const cards = quizData.map(quiz => {
-    return <Card
-            gameRunningState={gameIsRunning}
-            key={quiz.question_id}
-            questionId={quiz.question_id}
-            question={quiz.question}
-            options={quiz.options} 
-            selectedOptionID={quiz.selectedOptionID}
-            selectOption={selectOption}
-            answer={quiz.answer}
-            />
-  })
+  const cards = quizData.map((quiz) => {
+    return (
+      <Card
+        gameRunningState={gameIsRunning}
+        key={quiz.question_id}
+        questionId={quiz.question_id}
+        question={quiz.question}
+        options={quiz.options}
+        selectedOptionID={quiz.selectedOptionID}
+        selectOption={selectOption}
+        answer={quiz.answer}
+      />
+    );
+  });
 
   return (
-  <main className={className}>
-    {gameIsRunning && cards}
-    <SubmitButton onClick={() => setGameIsRunning(false)}>Check Answers</SubmitButton>
+    <main className={className}>
+      {gameIsRunning && cards}
+      <SubmitButton onClick={() => setGameIsRunning(false)}>
+        Check Answers
+      </SubmitButton>
     </main>
-    
-    );
+  );
 }
