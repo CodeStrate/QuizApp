@@ -6,8 +6,16 @@ import { Button, SubmitButton } from "../styledComponents/Button";
 import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
 
 export default function QuizScreen({ className, apiParams }) {
-  const { data, error, gameIsRunning, selectOption, restart, newGame, status } =
-    useQuizData(apiParams);
+  const {
+    data,
+    error,
+    gameIsRunning,
+    selectOption,
+    restart,
+    score,
+    newGame,
+    status,
+  } = useQuizData(apiParams);
 
   if (status === RequestStatus.Pending || status === RequestStatus.Idle) {
     return (
@@ -28,24 +36,22 @@ export default function QuizScreen({ className, apiParams }) {
     );
   }
 
-  const cards = data.map((quiz) => {
-    return (
-      <Card
-        gameRunningState={gameIsRunning}
-        key={quiz.questionId}
-        questionId={quiz.questionId}
-        question={quiz.question}
-        options={quiz.options}
-        selectedOptionID={quiz.selectedOptionId}
-        selectOption={selectOption}
-        answer={quiz.answer}
-      />
-    );
-  });
-
   return (
     <main className={className}>
-      {gameIsRunning && cards}
+      {gameIsRunning
+        ? data.map((quiz) => (
+            <Card
+              gameRunningState={gameIsRunning}
+              key={quiz.questionId}
+              questionId={quiz.questionId}
+              question={quiz.question}
+              options={quiz.options}
+              selectedOptionID={quiz.selectedOptionId}
+              selectOption={selectOption}
+              answer={quiz.answer}
+            />
+          ))
+        : null}
       <SubmitButton
         onClick={() => {
           // TODO: implement
