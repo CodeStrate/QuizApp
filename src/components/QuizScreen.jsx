@@ -6,25 +6,8 @@ import { Button, SubmitButton } from "../styledComponents/Button";
 import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
 
 export default function QuizScreen({ className, apiParams }) {
-  const {
-    error,
-    status,
-    gameIsRunning,
-    setGameIsRunning,
-    setQuizData,
-    quizData,
-  } = useQuizData(apiParams);
-
-  const selectOption = (queID, optionId) => {
-    const selectedOptionState = quizData.map((ques) => {
-      if (ques.question_id === queID) {
-        return { ...ques, selectedOptionID: optionId };
-      }
-      return ques;
-    });
-
-    setQuizData(selectedOptionState);
-  };
+  const { data, error, gameIsRunning, selectOption, restart, newGame, status } =
+    useQuizData(apiParams);
 
   if (status === RequestStatus.Pending || status === RequestStatus.Idle) {
     return (
@@ -45,15 +28,15 @@ export default function QuizScreen({ className, apiParams }) {
     );
   }
 
-  const cards = quizData.map((quiz) => {
+  const cards = data.map((quiz) => {
     return (
       <Card
         gameRunningState={gameIsRunning}
-        key={quiz.question_id}
-        questionId={quiz.question_id}
+        key={quiz.questionId}
+        questionId={quiz.questionId}
         question={quiz.question}
         options={quiz.options}
-        selectedOptionID={quiz.selectedOptionID}
+        selectedOptionID={quiz.selectedOptionId}
         selectOption={selectOption}
         answer={quiz.answer}
       />
@@ -63,7 +46,11 @@ export default function QuizScreen({ className, apiParams }) {
   return (
     <main className={className}>
       {gameIsRunning && cards}
-      <SubmitButton onClick={() => setGameIsRunning(false)}>
+      <SubmitButton
+        onClick={() => {
+          // TODO: implement
+        }}
+      >
         Check Answers
       </SubmitButton>
     </main>
