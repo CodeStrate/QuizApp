@@ -49,31 +49,41 @@ const getCheckboxClass = ({
 
 export const Card = ({
   question,
+  difficulty,
   options,
   questionId,
   selectOption,
-  selectedOptionID,
-  answer,
-  gameRunningState,
-}) => {
-  return (
-    <div className="card">
-      <CardQuestionParagraph>{question}</CardQuestionParagraph>
-      <div className="option-container">
-        {options.map((o) => (
+  selectedOptionId,
+  answerId,
+  gameIsRunning,
+}) => (
+  <div className="card">
+    <CardQuestionParagraph>{question}</CardQuestionParagraph>
+    <div className="option-container">
+      {options.map((o) => {
+        const className = getCheckboxClass({
+          difficulty,
+          isOver: !gameIsRunning,
+          optionId: o.id,
+          correctOptionId: answerId,
+          selectedOptionId,
+        });
+
+        return (
           <RadioButton
             key={o.id}
             id={o.id}
+            className={className}
             name={questionId}
             value={o.value}
             variant={`options`}
             onChange={() => selectOption(questionId, o.id)}
-            checked={selectedOptionID === o.id}
+            checked={selectedOptionId === o.id}
           >
             {o.value}
           </RadioButton>
-        ))}
-      </div>
+        );
+      })}
     </div>
-  );
-};
+  </div>
+);
