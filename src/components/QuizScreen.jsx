@@ -7,24 +7,16 @@ import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
 
 export default function QuizScreen({ className, apiParams }) {
   const {
+    data,
     error,
-    status,
+    finish,
     gameIsRunning,
-    setGameIsRunning,
-    setQuizData,
-    quizData,
+    selectOption,
+    restart,
+    score,
+    newGame,
+    status,
   } = useQuizData(apiParams);
-
-  const selectOption = (queID, optionId) => {
-    const selectedOptionState = quizData.map((ques) => {
-      if (ques.question_id === queID){
-        return {...ques, selectedOptionID : optionId};
-      }
-      return ques;
-    });
-
-    setQuizData(selectedOptionState);
-  }
 
   if (status === RequestStatus.Pending || status === RequestStatus.Idle) {
     return (
@@ -40,29 +32,37 @@ export default function QuizScreen({ className, apiParams }) {
   if (status === RequestStatus.Rejected && error) {
     return (
       <main className={className}>
-        <SubTitle>Something went wrong!</SubTitle>
+        <SubTitle>Something went wrong! {error?.message}</SubTitle>
       </main>
     );
   }
 
-  const cards = quizData.map(quiz => {
-    return <Card
-            gameRunningState={gameIsRunning}
-            key={quiz.question_id}
-            questionId={quiz.question_id}
-            question={quiz.question}
-            options={quiz.options} 
-            selectedOptionID={quiz.selectedOptionID}
-            selectOption={selectOption}
-            answer={quiz.answer}
-            />
-  })
-
   return (
-  <main className={className}>
-    {gameIsRunning && cards}
-    <SubmitButton onClick={() => setGameIsRunning(false)}>Check Answers</SubmitButton>
+    <main className={className}>
+      {data?.map((quiz) => (
+        <Card
+          gameIsRunning={gameIsRunning}
+          difficulty={apiParams.difficulty}
+          key={quiz.questionId}
+          questionId={quiz.questionId}
+          question={quiz.question}
+          options={quiz.options}
+          selectedOptionId={quiz.selectedOptionId}
+          selectOption={selectOption}
+          answerId={quiz.answer.id}
+        />
+      ))}
+      {gameIsRunning ? (
+        <SubmitButton onClick={finish}>Check Answers</SubmitButton>
+      ) : (
+        <>
+          <p>
+            Your score is {data.length}/{score}
+          </p>
+          <SubmitButton onClick={newGame}>New Game</SubmitButton>
+          <SubmitButton onClick={restart}>Retry</SubmitButton>
+        </>
+      )}
     </main>
-    
-    );
+  );
 }
