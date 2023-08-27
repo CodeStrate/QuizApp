@@ -57,7 +57,7 @@ export default function QuizScreen({ className, apiParams }) {
       ) : (
         <>
           <p>
-            Your score is {data.length}/{score}
+            Your score is {score} out of {data.length}
           </p>
           <SubmitButton onClick={newGame}>New Game</SubmitButton>
           <SubmitButton onClick={restart}>Retry</SubmitButton>

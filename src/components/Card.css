@@ -11,11 +11,11 @@
   width: 600px;
   height: min(200px, 350px);
   border-radius: 15px;
-  border: 2px solid #3c896d;
+  border: 2px solid #57b8ff;
   background-color: white;
   margin-bottom: 15px;
   padding: 10px;
-  box-shadow: 0 3px #3c896d;
+  box-shadow: 0 3px #57b8ff;
 }
 
 .option-container {

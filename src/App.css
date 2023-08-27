@@ -53,7 +53,7 @@ svg {
   height: 4rem;
   color: white;
   cursor: pointer;
-  stroke: #316e58;
+  stroke: #2274A5;
   stroke-width: 80px;
 }
 
@@ -77,8 +77,8 @@ svg {
   transition: all 0.5s ease-in-out;
   padding: 30px;
   overflow-y: scroll;
-  border: 3px solid #3c896d;
-  box-shadow: 0 6px #3c896d;
+  border: 3px solid #57b8ff;
+  box-shadow: 0 6px #57b8ff;
 }
 
 .close {
@@ -89,7 +89,7 @@ svg {
 }
 
 hr {
-  border: 2px solid #3c896d;
+  border: 2px solid #57b8ff;
   border-radius: 10px;
 }
 
@@ -114,8 +114,8 @@ hr {
   border-radius: 15px;
   padding: 30px;
   overflow-y: scroll;
-  border: 3px solid #3c896d;
-  box-shadow: 0 6px #3c896d;
+  border: 3px solid #57b8ff;
+  box-shadow: 0 6px #57b8ff;
   justify-content: flex-start;
 }
 
@@ -134,10 +134,10 @@ hr {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 5px solid #3c896d;
+  border: 5px solid #57b8ff;
   animation: bounceTransform 0.5s ease-out infinite alternate;
   animation-delay: 0.3s;
-  box-shadow: inset 1rem 1rem #3c896d;
+  box-shadow: inset 1rem 1rem #57b8ff;
 }
 
 @keyframes bounceTransform {

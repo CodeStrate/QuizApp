@@ -4,10 +4,10 @@ export const Button = styled.button`
   width: 200px;
   height: 70px;
   background-color: white;
-  border: 3px solid #3c896d;
-  box-shadow: 0 10px 0px #3c896d;
+  border: 3px solid #3f8efc;
+  box-shadow: 0 10px 0px #3f8efc;
   border-radius: 15px;
-  color: #3c896d;
+  color: #3f8efc;
   font-size: 1.5rem;
 
   font-weight: 500;
@@ -33,7 +33,7 @@ export const PrefButton = styled(Button)`
 export const SubmitButton = styled(Button)`
   border-radius: 8px;
   font-size: 0.9rem;
-  box-shadow: 0 5px 0px #3c896d;
+  box-shadow: 0 5px 0px #3f8efc;
   padding-block: 10px;
 
   &:active {
