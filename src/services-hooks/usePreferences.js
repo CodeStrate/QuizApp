@@ -12,7 +12,7 @@ const preferencesReducer = (state, action) => {
     case "update":
       return {
         ...state,
-        [action.name]: action.value,
+        ...action.payload,
       };
     case "reset":
       return action.payload || getInitialState();
@@ -28,8 +28,8 @@ const usePreferences = (initialState = getInitialState()) => {
     dispatch({ type: "reset", payload: initialState });
   }, [initialState]);
 
-  const update = useCallback((name, value) => {
-    dispatch({ type: "update", name, value });
+  const update = useCallback((newPreferences) => {
+    dispatch({ type: "update", payload: newPreferences });
   }, []);
 
   return useMemo(
