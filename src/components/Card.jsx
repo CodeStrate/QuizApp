@@ -40,7 +40,6 @@ const getCheckboxClass = ({
   const difficultyClass = getCheckboxDifficultyClass(difficulty);
   const correctClass = getCheckboxCorrectClass(isOver, isSelected, isCorrect);
 
-  console.log(correctClass);
   // Compose a class list
   const classNames = ["card-checkbox", difficultyClass, correctClass];
   // Filter falsy values then compose the final class
@@ -76,7 +75,6 @@ export const Card = ({
             className={className}
             name={questionId}
             value={o.value}
-            variant={`options`}
             onChange={() => selectOption(questionId, o.id)}
             checked={selectedOptionId === o.id}
           >

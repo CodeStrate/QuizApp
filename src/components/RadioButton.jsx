@@ -1,11 +1,11 @@
 import "./RadioButton.css";
 
-const RadioButton = ({ children, id, variant, ...rest }) => {
+const RadioButton = ({ children, id, ...rest }) => {
   return (
     <>
       <input
         type="radio"
-        className={`radio-button ${variant ? variant : ""}`}
+        className={`radio-button`}
         id={id}
         {...rest}
       />

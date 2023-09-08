@@ -1,8 +1,12 @@
-// sample link :   https://opentdb.com/api.php?amount=10
-
-import { LoadingSubTitle, SubTitle } from "../styledComponents/SubTitle";
+//Component Import
 import { Card } from "./Card";
-import { Button, SubmitButton } from "../styledComponents/Button";
+
+//Styled Components Import
+import { LoadingSubTitle, SubTitle } from "../styledComponents/SubTitle";
+import { SubmitButton } from "../styledComponents/Button";
+import { Paragraph } from "../styledComponents/Paragraph";
+
+//Service Hooks Import
 import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
 
 export default function QuizScreen({ className, apiParams }) {
@@ -56,9 +60,9 @@ export default function QuizScreen({ className, apiParams }) {
         <SubmitButton onClick={finish}>Check Answers</SubmitButton>
       ) : (
         <>
-          <p>
+          <Paragraph>
             Your score is {score} out of {data.length}
-          </p>
+          </Paragraph>
           <SubmitButton onClick={newGame}>New Game</SubmitButton>
           <SubmitButton onClick={restart}>Retry</SubmitButton>
         </>
