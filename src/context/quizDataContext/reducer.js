@@ -19,9 +19,16 @@ export const RequestStatus = {
   Resolved: "resolved",
 };
 
+export const GameStatus = {
+  Idle: "idle",
+  Loading: "loading",
+  Over: "over",
+  Playing: "playing",
+};
+
 export const getInitialState = () => ({
   requestStatus: RequestStatus.Idle,
-  gameIsRunning: false,
+  gameStatus: GameStatus.Idle,
   backupData: null,
   data: null,
   error: null,
@@ -35,7 +42,7 @@ const quizDataReducer = (state, action) => {
         ...state,
         score: 0,
         requestStatus: RequestStatus.Pending,
-        gameIsRunning: false,
+        gameStatus: GameStatus.Loading,
         backupData: null,
         data: null,
         error: null,
@@ -46,7 +53,7 @@ const quizDataReducer = (state, action) => {
         ...state,
         score: 0,
         requestStatus: RequestStatus.Rejected,
-        gameIsRunning: false,
+        gameStatus: GameStatus.Idle,
         backupData: null,
         data: null,
         error: action.payload,
@@ -57,7 +64,7 @@ const quizDataReducer = (state, action) => {
         ...state,
         score: 0,
         requestStatus: RequestStatus.Resolved,
-        gameIsRunning: true,
+        gameStatus: GameStatus.Playing,
         data: action.payload,
         backupData: action.payload,
         error: null,
@@ -66,13 +73,14 @@ const quizDataReducer = (state, action) => {
     case "restart":
       return {
         ...state,
-        score: 0,
-        gameIsRunning: true,
+        error: null,
         data: state.backupData,
+        gameStatus: GameStatus.Playing,
+        score: 0,
       };
 
     case "select-option": {
-      if (!state.gameIsRunning) return state;
+      if (state.gameStatus !== GameStatus.Playing) return state;
 
       const data = state.data.map((q) => {
         if (q.questionId === action.payload.questionId) {
@@ -86,11 +94,11 @@ const quizDataReducer = (state, action) => {
     }
 
     case "finish":
-      if (!state.gameIsRunning) return state;
+      if (state.gameStatus !== GameStatus.Playing) return state;
 
       return {
         ...state,
-        gameIsRunning: false,
+        gameStatus: GameStatus.Over,
         score: calculateScore(state.data),
       };
 
