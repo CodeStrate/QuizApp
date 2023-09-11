@@ -5,7 +5,7 @@ export default async function fetchQuestions(apiParams, signal) {
     amount,
     category,
     difficulty,
-    typeProp: type,
+    type,
   });
 
   const res = await fetch(`https://opentdb.com/api.php?${searchParams}`, {
