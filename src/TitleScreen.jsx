@@ -58,4 +58,32 @@ function App() {
   );
 }
 
+const Layout = ({ render }) => {
+  const { preferences, reset, update } = usePreferences({
+    amount: 5,
+    difficulty: "easy",
+    type: "multiple",
+    category: "9",
+  });
+  const [openPrefs, togglePrefs] = useToggle(false);
+
+  return (
+    <main className="title--screen">
+      <span onClick={togglePrefs} className="icon pref">
+        <AiFillSetting />
+      </span>
+      <span className="icon music">
+        <AiFillPlayCircle />
+      </span>
+      <Preferences
+        open={openPrefs}
+        preferences={preferences}
+        reset={reset}
+        update={update}
+      />
+      {render({ openPrefs, preferences })}
+    </main>
+  );
+};
+
 export default App;
