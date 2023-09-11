@@ -1,39 +1,44 @@
-//Component Import
 import { Card } from "./Card";
 
-//Styled Components Import
 import { LoadingSubTitle, SubTitle } from "../styledComponents/SubTitle";
 import { SubmitButton } from "../styledComponents/Button";
 import { Paragraph } from "../styledComponents/Paragraph";
+import { useQuizData } from "../context/quizDataContext/QuizDataContext";
+import { GameStatus, RequestStatus } from "../context/quizDataContext/reducer";
 
-//Service Hooks Import
-import useQuizData, { RequestStatus } from "../services-hooks/useQuizData";
-
-export default function QuizScreen({ className, apiParams }) {
+export default function QuizScreen({ className, preferences }) {
   const {
     data,
     error,
     finish,
-    gameIsRunning,
+    gameStatus,
     selectOption,
     restart,
     score,
     newGame,
-    status,
-  } = useQuizData(apiParams);
+    requestStatus,
+  } = useQuizData();
 
-  if (status === RequestStatus.Pending || status === RequestStatus.Idle) {
+  const isGamePlaying = gameStatus === GameStatus.Playing;
+  const difficulty = preferences.difficulty;
+
+  const startANewGame = () => newGame(preferences);
+
+  if (
+    requestStatus === RequestStatus.Pending ||
+    requestStatus === RequestStatus.Idle
+  ) {
     return (
       <main className={className}>
         <div className="loader">
           <div className="loading--Animation"></div>
-          <LoadingSubTitle>Loading</LoadingSubTitle>
+          <LoadingSubTitle>Loading...</LoadingSubTitle>
         </div>
       </main>
     );
   }
 
-  if (status === RequestStatus.Rejected && error) {
+  if (requestStatus === RequestStatus.Rejected && error) {
     return (
       <main className={className}>
         <SubTitle>Something went wrong! {error?.message}</SubTitle>
@@ -45,28 +50,29 @@ export default function QuizScreen({ className, apiParams }) {
     <main className={className}>
       {data?.map((quiz) => (
         <Card
-          gameIsRunning={gameIsRunning}
-          difficulty={apiParams.difficulty}
+          answerId={quiz.answer.id}
+          difficulty={difficulty}
+          isGamePlaying={isGamePlaying}
           key={quiz.questionId}
-          questionId={quiz.questionId}
-          question={quiz.question}
           options={quiz.options}
+          question={quiz.question}
+          questionId={quiz.questionId}
           selectedOptionId={quiz.selectedOptionId}
           selectOption={selectOption}
-          answerId={quiz.answer.id}
         />
       ))}
-      {gameIsRunning ? (
+      {isGamePlaying ? (
         <SubmitButton onClick={finish}>Check Answers</SubmitButton>
-      ) : (
+      ) : null}
+      {gameStatus === GameStatus.Over ? (
         <>
           <Paragraph>
             Your score is {score} out of {data.length}
           </Paragraph>
-          <SubmitButton onClick={newGame}>New Game</SubmitButton>
+          <SubmitButton onClick={startANewGame}>New Game</SubmitButton>
           <SubmitButton onClick={restart}>Retry</SubmitButton>
         </>
-      )}
+      ) : null}
     </main>
   );
 }
