@@ -1,8 +1,6 @@
-import "./App.css";
-
+import { useState } from "react";
 import { AiFillSetting, AiFillPlayCircle } from "react-icons/ai";
 import Preferences from "./components/Preferences";
-import useToggle from "./services-hooks/useToggle";
 import usePreferences from "./services-hooks/usePreferences";
 
 import { Paragraph } from "./styledComponents/Paragraph";
@@ -55,17 +53,28 @@ const App = () => {
 };
 
 const Layout = ({ render }) => {
+  const [openPrefs, setOpenPrefs] = useState(false);
+
+  const { gameStatus } = useQuizData();
   const { preferences, reset, update } = usePreferences({
     amount: 5,
     difficulty: "easy",
     type: "multiple",
     category: "9",
   });
-  const [openPrefs, togglePrefs] = useToggle(false);
+
+  const isGamePlaying = gameStatus === GameStatus.Playing;
+  const togglePrefs = () => {
+    if (isGamePlaying) return;
+
+    setOpenPrefs((prev) => !prev);
+  };
+
+  const prefIconClassName = `icon pref${isGamePlaying ? " pref-disabled" : ""}`;
 
   return (
     <main className="title--screen">
-      <span onClick={togglePrefs} className="icon pref">
+      <span onClick={togglePrefs} className={prefIconClassName}>
         <AiFillSetting />
       </span>
       <span className="icon music">

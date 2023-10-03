@@ -53,7 +53,7 @@ svg {
   height: 4rem;
   color: white;
   cursor: pointer;
-  stroke: #2274A5;
+  stroke: #2274a5;
   stroke-width: 80px;
 }
 
@@ -145,4 +145,17 @@ hr {
     transform: translateY(-150px) rotateZ(-360deg);
     border-radius: 10px;
   }
+}
+
+@keyframes grayscaleAnimation {
+  0% {
+    filter: grayscale(0);
+  }
+  100% {
+    filter: grayscale(1);
+  }
+}
+
+.pref-disabled {
+  animation: grayscaleAnimation 500ms ease-out forwards;
 }
