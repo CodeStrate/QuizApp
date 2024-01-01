@@ -15,8 +15,8 @@ const getCheckboxDifficultyClass = (difficulty) => {
   }
 };
 
-const getCheckboxCorrectClass = (isOver, isSelected, isCorrect) => {
-  if (!isOver) return null;
+const getCheckboxCorrectClass = (isGamePlaying, isSelected, isCorrect) => {
+  if (isGamePlaying) return null;
 
   if (isSelected && isCorrect) {
     return "card-checkbox--correct";
@@ -26,8 +26,8 @@ const getCheckboxCorrectClass = (isOver, isSelected, isCorrect) => {
 };
 
 const getCheckboxClass = ({
-  isOver,
   difficulty,
+  isGamePlaying,
   optionId,
   correctOptionId,
   selectedOptionId,
@@ -38,7 +38,11 @@ const getCheckboxClass = ({
 
   // Get our classes
   const difficultyClass = getCheckboxDifficultyClass(difficulty);
-  const correctClass = getCheckboxCorrectClass(isOver, isSelected, isCorrect);
+  const correctClass = getCheckboxCorrectClass(
+    isGamePlaying,
+    isSelected,
+    isCorrect
+  );
 
   // Compose a class list
   const classNames = ["card-checkbox", difficultyClass, correctClass];
@@ -47,14 +51,14 @@ const getCheckboxClass = ({
 };
 
 export const Card = ({
-  question,
-  difficulty,
-  options,
-  questionId,
-  selectOption,
-  selectedOptionId,
   answerId,
-  gameIsRunning,
+  difficulty,
+  isGamePlaying,
+  options,
+  question,
+  questionId,
+  selectedOptionId,
+  selectOption,
 }) => (
   <div className="card">
     <CardQuestionParagraph>{question}</CardQuestionParagraph>
@@ -62,7 +66,7 @@ export const Card = ({
       {options.map((o) => {
         const className = getCheckboxClass({
           difficulty,
-          isOver: !gameIsRunning,
+          isGamePlaying,
           optionId: o.id,
           correctOptionId: answerId,
           selectedOptionId,
