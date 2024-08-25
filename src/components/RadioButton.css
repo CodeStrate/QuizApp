@@ -22,7 +22,7 @@
 }
 
 .radio-button:checked + label {
-  border-color: #70b2c1;
+  border-color: #69d6ee;
   background-color: #57b8ff;
   color: white;
 }
@@ -32,7 +32,7 @@
 }
 
 .radio-button + label:hover {
-  background-color: #9dd5db;
+  background-color: #69d6ee;
 }
 
 .medium + label {
@@ -91,7 +91,7 @@
 }
 
 .card-checkbox--easy + label {
-  border-color: #3c896d;
+  border-color: #57b8ff;
 }
 
 .card-checkbox--medium + label {
@@ -103,8 +103,8 @@
 }
 
 .card-checkbox--easy:checked + label {
-  border-color: #50ae8c;
-  background-color: #3c896d;
+  border-color: #69d6ee;
+  background-color: #57b8ff;
   color: white;
 }
 
@@ -121,9 +121,11 @@
 }
 
 .card-checkbox--correct:checked + label {
-  background-color: green;
+  border-color: #50ae8c;
+  background-color: #3c896d;
 }
 
 .card-checkbox--incorrect:checked + label {
-  background-color: red;
+  border-color: #f0738e;
+  background-color: #cf3755;
 }
